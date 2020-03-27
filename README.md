@@ -79,7 +79,8 @@ it will take about 1 hour, the saved images are like this:
 <p align="center">
     <img src="1.png", height="224">
 </p>  
-from left to right: rgb image, depth image, my synthesis with environmental information, predict label and ground truth label.  
+from left to right: rgb image, depth image, my synthesis depth image with environmental information, predict label and ground truth label.   
+I use the synthesis depth image as input and output the predict label. 
 
 - if you want to get the mIou score, run:
 
