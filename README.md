@@ -91,5 +91,5 @@ it will take about 1 hour. In my experiment, the final mIou score is 0.867
 
 ### 4.3 some results
 <p align="center">
-    <img src="./res2.gif.gif", height="360">
+    <img src="./res2.gif", height="360">
 </p>
