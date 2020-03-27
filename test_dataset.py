@@ -57,11 +57,13 @@ def save():
 
             plt.subplot(1,5,4)
             plt.axis('off')
+            plt.title('predict label')
             pre_mask = predict[i].numpy()
             plt.imshow(pre_mask)
 
             plt.subplot(1,5,5)
             plt.axis('off')
+            plt.title('gt label')
             plt.imshow(torch.squeeze(item['mask_im'][i].cpu(), dim=0).numpy())
 
             name = item['tmp_depth_dir'][i].split('/')[-1]

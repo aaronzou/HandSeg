@@ -63,23 +63,27 @@ it will show the input depth image as well as the predict label.
 
 #### 4.2 test on the test dataset:
 
-if you want to see the visual results , run:
+- if you want to see the visual results , run:
 
 ```bash
 python test_dataset.py --mode "show"
 ```
 
-if you want to save the predicted label, run:
+- if you want to save the predicted label, run:
 
 ```bash
 python test_dataset.py --mode "save"
-```
+```  
+it will take about 1 hour, the saved images are like this:  
+[](1.png)
 
-if you want to get the mIou score, run:
+- if you want to get the mIou score, run:
 
 ```bash
 python test_dataset.py --mode "miou"
-```
+```  
+it will take about 1 hour. In my experiment, the final mIou score is 0.867  
+
 
 ### 4.3 some results
 <p align="center">
