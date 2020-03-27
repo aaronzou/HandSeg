@@ -4,14 +4,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 
-def get_gif(root='./results_2', name='res2.gif', modify=False, duration=0.2):
+def get_gif(root='./results_2', name='res2.gif', modify=False, duration=0.05):
     image_paths = [os.path.join(root, f)
                    for f in os.listdir(root)]
     image_paths.sort()
     print("{} images.".format(str(len(image_paths))))
 
     frames = []
-    for i in range(22,40):#271
+    for i in range(17,117):#271
         image = imageio.imread(image_paths[i])
         # image = np.array(Image.open(image_paths[i])).astype(np.float32)
         # image = np.array(plt.imread(image_paths[i]))

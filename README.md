@@ -75,9 +75,11 @@ python test_dataset.py --mode "show"
 python test_dataset.py --mode "save"
 ```  
 it will take about 1 hour, the saved images are like this:  
+</br></br>
 <p align="center">
     <img src="1.png", width="360">
-</p>
+</p>  
+from left to right: rgb image, depth image, my synthesis with environmental information, predict label and ground truth label.  
 
 - if you want to get the mIou score, run:
 
@@ -89,6 +91,5 @@ it will take about 1 hour. In my experiment, the final mIou score is 0.867
 
 ### 4.3 some results
 <p align="center">
-    <img src="./depth.gif", width="360">
-    <img src="./res1.gif", width="360">
+    <img src="./res2.gif.gif", height="360">
 </p>
