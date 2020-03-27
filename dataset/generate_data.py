@@ -59,7 +59,5 @@ def GenerateData():
     np.savez('ego_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
     np.savez('ego_test.npz', rgb=test_rgb, depth=test_depth, tmp_depth=test_tmp_depth,mask=test_mask)
 
-
-
 if __name__ == '__main__':
     GenerateData()

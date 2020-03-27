@@ -1,4 +1,5 @@
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 import torch
 from torch.utils.data import DataLoader
 import numpy as np
@@ -25,7 +26,7 @@ def save():
     model.to(device)
     model.eval()
 
-    root="./results"
+    root="./results_2"
     if not os.path.exists(root):
         os.mkdir(root)
 
@@ -34,18 +35,45 @@ def save():
                                       initial=0), 0):
         item = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch.items()}
 
+        rgb = item['rgb'].cpu()
+        depth_im = item['depth_im'].cpu()
+        tmp_depth = item['tmp_depth'].cpu()
         predict = model(item['tmp_depth'].to(device))
+        predict = torch.argmax(predict.cpu(), dim=1)
 
         for i in range(predict.shape[0]):
-            pre_mask = torch.argmax(predict.cpu(), dim=1)[i].numpy()
+            fig = plt.figure()
+            plt.subplot(1,5,1)
+            plt.axis('off')
+            plt.imshow(torch.squeeze(rgb[i]).numpy()/255)
+
+            plt.subplot(1,5,2)
+            plt.axis('off')
+            plt.imshow(torch.squeeze(depth_im[i]).numpy())
+
+            plt.subplot(1,5,3)
+            plt.axis('off')
+            plt.imshow(tmp_depth[i,0,:,:].numpy())
+
+            plt.subplot(1,5,4)
+            plt.axis('off')
+            pre_mask = predict[i].numpy()
+            plt.imshow(pre_mask)
+
+            plt.subplot(1,5,5)
+            plt.axis('off')
+            plt.imshow(torch.squeeze(item['mask_im'][i].cpu(), dim=0).numpy())
+
             name = item['tmp_depth_dir'][i].split('/')[-1]
             save_path = os.path.join(root, name)
-            plt.imsave(save_path, pre_mask)
+            plt.savefig(save_path, bbox_inches='tight', dpi=300)
+            plt.close()
+            # plt.imsave(save_path, pre_mask)
 
 
 def show():
-    seg_data = HandSegDataset(is_train=True)
-    data_loader = DataLoader(seg_data, batch_size=4, shuffle=True)
+    seg_data = HandSegDataset(is_train=False)
+    data_loader = DataLoader(seg_data, batch_size=4, shuffle=False)
 
     vgg_net = VGGNet(pretrained=True)
     model = FCN16s(pretrained_net=vgg_net, n_class=3)
@@ -56,6 +84,7 @@ def show():
     model.eval()
 
     for item in data_loader:
+        fig = plt.figure()
         plt.subplot(1, 5, 1)
         plt.axis('off')
         rgb = item['rgb'][0]
@@ -73,16 +102,10 @@ def show():
         plt.subplot(1,5,3)
         plt.axis('off')
         plt.imshow(tmp_depth)
-        # tmp_depth = torch.squeeze(tmp_depth).numpy()
-        # plt.subplot(2,3,3)
-        # plt.axis('off')
-        # plt.imshow(tmp_depth[0])
+
 
         predict = model(item['tmp_depth'].to(device))
         pre_mask = torch.argmax(predict.cpu(), dim=1)[0].numpy()
-        # pre_seg = predict[0].permute(1, 2, 0)
-        # pre_seg = pre_seg.detach().numpy()
-        # pre_mask = np.argmax(pre_seg, -1).astype(np.float32)
         plt.subplot(1,5,4)
         plt.axis('off')
         plt.title('predict label')
@@ -94,6 +117,7 @@ def show():
         plt.axis('off')
         plt.title('gt label')
         plt.imshow(mask_im)
+
         plt.show()
 
         break

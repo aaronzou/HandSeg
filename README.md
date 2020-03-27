@@ -4,7 +4,10 @@
 - pytorch >=1.1.0
 - tensorboard
 - matplotlib
-- Pillow 
+- Pillow  
+ 
+If any other package is missed, just run "pip install xxx" to get it.  
+I build the project under ubuntu16.04, cuda 8.0
 
 ### 2. Prepare code
 
@@ -17,7 +20,9 @@ cd HandSeg
 
 ### 3. Prepare data
 
-download the data from : https://pan.baidu.com/s/10HV4lBfDw3bMarXl11eSzQ ,extract code:c56a   
+download the data from : https://pan.baidu.com/s/1BSQvR_dZpz7-EY_fI-uvvg ,extract code:or0i
+
+If the link is missed, please contact me via email.  
 
 I strongly suggest you open a vip service when you download the data if you find the download speed is slow which will save you time.  
 
@@ -76,8 +81,8 @@ if you want to get the mIou score, run:
 python test_dataset.py --mode "miou"
 ```
 
-#### 4.3 some results
+### 4.3 some results
 <p align="center">
     <img src="./depth.gif", width="360">
-    <img src="res.gif", width="360">
+    <img src="./res1.gif", width="360">
 </p>
