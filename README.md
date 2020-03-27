@@ -75,7 +75,9 @@ python test_dataset.py --mode "show"
 python test_dataset.py --mode "save"
 ```  
 it will take about 1 hour, the saved images are like this:  
-[](1.png)
+<p align="center">
+    <img src="1.png", width="360">
+</p>
 
 - if you want to get the mIou score, run:
 
