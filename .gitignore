@@ -1,7 +1,6 @@
 __pycache__
 .idea
 *.npz
-/checkpoints/
 /results/
 /results_1/
 /results_2/
