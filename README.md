@@ -1,4 +1,4 @@
-### 1. requirements
+## 1. requirements
 
 - numpy
 - pytorch >=1.1.0
@@ -9,7 +9,7 @@
 If any other package is missed, just run "pip install xxx" to get it.  
 I build the project under ubuntu16.04, cuda 8.0
 
-### 2. Prepare code
+## 2. Prepare code
 
 clone this repo 
 
@@ -18,7 +18,7 @@ git clone https://github.com/liwenssss/HandSeg.git
 cd HandSeg
 ```
 
-### 3. Prepare data
+## 3. Prepare data
 
 download the data from : https://pan.baidu.com/s/1BSQvR_dZpz7-EY_fI-uvvg ,extract code:or0i
 
@@ -49,7 +49,7 @@ TMP_HAND_SEG_EGO_DATA = '/path/to/the/code/HandsSeg/dataset/ego_train.npz'
 TMP_HAND_SEG_EGO_TEST_DATA = '/path/to/the/code/HandsSeg/dataset/ego_test.npz'
 ```
 
-### 4. Test example
+## 4. Test example
 
 You can use the terminal satisfied the requirements to run the following test demo, but I still suggest you using an IDE such as pycharm. All the following test is ok under pycharm.
 
@@ -77,7 +77,7 @@ python test_dataset.py --mode "save"
 it will take about 1 hour, the saved images are like this:  
 </br></br>
 <p align="center">
-    <img src="1.png", width="360">
+    <img src="1.png", height="224">
 </p>  
 from left to right: rgb image, depth image, my synthesis with environmental information, predict label and ground truth label.  
 
@@ -89,7 +89,26 @@ python test_dataset.py --mode "miou"
 it will take about 1 hour. In my experiment, the final mIou score is 0.867  
 
 
-### 4.3 some results
+## 5. some results
 <p align="center">
-    <img src="./res2.gif", height="360">
+    <img src="./res2.gif", height="224">
+</p>
+
+<p align="center">
+    <img src="./res3.gif", height="224">
+</p>
+<p align="center">
+    <img src="./res7.gif", height="224">
+</p>
+
+But we can see that when two hands interact completely, especially when one hand
+overlay another hand, the predict result is not good:
+<p align="center">
+    <img src="./res4.gif", height="224">
+</p>
+<p align="center">
+    <img src="./res5.gif", height="224">
+</p>
+<p align="center">
+    <img src="./res6.gif", height="224">
 </p>
