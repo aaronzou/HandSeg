@@ -4,8 +4,11 @@ import sys
 sys.path.append('./')
 import config
 
-def GenerateData():
-    root = config.HAND_SEG_EGO_DATA_PATH
+def GenerateData(direction='ego'):
+    if direction == 'ego':
+        root = config.HAND_SEG_EGO_DATA_PATH
+    elif direction == 'front':
+        root = config.HAND_SEG_FRONT_DATA_PATH
 
     train_user_dir = ['output_user01', 'output_user02']
     test_user_dir = ['output_user04']
@@ -56,8 +59,18 @@ def GenerateData():
 
     print(len(train_depth), len(train_mask))
     print(len(test_depth), len(test_tmp_depth))
-    np.savez('ego_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
-    np.savez('ego_test.npz', rgb=test_rgb, depth=test_depth, tmp_depth=test_tmp_depth,mask=test_mask)
+
+    if direction == 'ego':
+        np.savez('ego_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
+        np.savez('ego_test.npz', rgb=test_rgb, depth=test_depth, tmp_depth=test_tmp_depth,mask=test_mask)
+    elif direction == 'front':
+        np.savez('front_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
+        np.savez('front_test.npz', rgb=test_rgb, depth=test_depth, tmp_depth=test_tmp_depth,mask=test_mask)
+
 
 if __name__ == '__main__':
-    GenerateData()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--direction', default='ego', choices=['front', 'ego'], type=str)
+    args = parser.parse_args()
+    GenerateData(direction=args.direction)

@@ -25,13 +25,19 @@ def get_one_hot(label, N):
 
 
 class HandSegDataset(Dataset):
-    def __init__(self, is_train=True):
+    def __init__(self, direction='ego', is_train=True):
         super(HandSegDataset, self).__init__()
 
-        if is_train:
-            self.data = np.load(config.TMP_HAND_SEG_EGO_DATA)
-        else:
-            self.data = np.load(config.TMP_HAND_SEG_EGO_TEST_DATA)
+        if direction == 'ego':
+            if is_train:
+                self.data = np.load(config.TMP_HAND_SEG_EGO_DATA)
+            else:
+                self.data = np.load(config.TMP_HAND_SEG_EGO_TEST_DATA)
+        elif direction == 'front':
+            if is_train:
+                self.data = np.load(config.TMP_HAND_SEG_FRONT_DATA)
+            else:
+                self.data = np.load(config.TMP_HAND_SEG_FRONT_TEST_DATA)
 
         self.rgb_dirs = self.data['rgb']
         self.depth_dirs = self.data['depth']
