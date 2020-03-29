@@ -1,8 +1,8 @@
-**update:** If you have downloaded the dataset before 3.20, you should go to the link and download
+**update:** If you have downloaded the dataset before 3/29, you should go to the link and download
 the 'front' part.   
  
 Read carefully and edit your own config.py(just a litter difference
- between former version).   
+ between the former version which point out the position of the front part data).   
  
 When you run the test, I add a parameter  to determine test on which direction('ego' or 'front'). 
 
