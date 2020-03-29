@@ -23,13 +23,13 @@ from FCNet import VGGNet, FCN16s
 from loss_function import cross_entropy2d, FocalLoss_Ori
 
 
-def trainer(device, direction='front', batch_size=4, eqoch_num=20):
+def trainer(device, direction='front', batch_size=8, eqoch_num=20):
     seg_data = HandSegDataset(direction=direction, is_train=True)
     data_loader = DataLoader(seg_data, batch_size=batch_size, num_workers=4, shuffle=True)
 
     vgg_model = VGGNet(requires_grad=True)
     model = FCN16s(pretrained_net=vgg_model, n_class=3)
-    model.load_state_dict(torch.load('/home/liwensh2/code/HandsSeg/checkpoints/front_FCN16s_1.pth'))
+    # model.load_state_dict(torch.load('/home/liwensh2/code/HandsSeg/checkpoints/front_FCN16s_1.pth'))
     model = model.to(device)
 
     FL = FocalLoss_Ori(num_class=3, alpha=0.25,

@@ -66,7 +66,7 @@ def GenerateData(direction='front'):
         np.savez('ego_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
         np.savez('ego_test.npz', rgb=test_rgb, depth=test_depth, tmp_depth=test_tmp_depth,mask=test_mask)
     elif direction == 'front':
-    #     np.savez('front_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
+        np.savez('front_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
         np.savez('front_test.npz', rgb=test_rgb, depth=test_depth, tmp_depth=test_tmp_depth,mask=test_mask)
 
 

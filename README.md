@@ -1,3 +1,11 @@
+**update:** If you have downloaded the dataset before 3.20, you should go to the link and download
+the 'front' part.   
+ 
+Read carefully and edit your own config.py(just a litter difference
+ between former version).   
+ 
+When you run the test, I add a parameter  to determine test on which direction('ego' or 'front'). 
+
 ## 1. requirements
 
 - numpy
@@ -30,6 +38,7 @@ After you finished the download step, modify the config.py:
 
 ```python
 HAND_SEG_EGO_DATA_PATH = '/path/to/the/dataset/paintedHands/ego'
+HAND_SEG_FRONT_DATA_PATH = '/path/to/the/dataset/paintedHands/front'
 ```
 
 Then, run:
