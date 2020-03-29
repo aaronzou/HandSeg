@@ -111,7 +111,7 @@ or
 python test_dataset.py --mode "miou" --direction "front"
 ```  
 it will take about 1 hour. In my experiment, the final mIou score
- of ego view is 0.867  and the final mIou score of front view is 
+ of ego view is 0.867  and the final mIou score of front view is 0.846. 
 
 
 ## 5. some results

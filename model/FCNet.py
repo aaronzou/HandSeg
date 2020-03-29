@@ -146,7 +146,7 @@ Sequential(
 
 if __name__ == "__main__":
     x = torch.randn(1, 3, 480, 640)
-    vgg = VGGNet()
-    fc_model = FCN16s(pretrained_net=vgg, n_class=3)
-    output = fc_model(x)
-    print(output.shape)
+    # vgg = VGGNet()
+    # fc_model = FCN16s(pretrained_net=vgg, n_class=3)
+    # output = fc_model(x)
+    # print(output.shape)

@@ -42,7 +42,7 @@ def save(device, direction='front'):
         depth_im = item['depth_im'].cpu()
         tmp_depth = item['tmp_depth'].cpu()
         predict = model(item['tmp_depth'].to(device))
-        predict = torch.argmax(predict.cpu(), dim=1)
+
 
         for i in range(predict.shape[0]):
             fig = plt.figure()
@@ -202,7 +202,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--direction', default='front', choices=['front', 'ego'], type=str)
-    parser.add_argument('--mode', default='save', choices=['show', 'save', 'miou'], type=str)
+    parser.add_argument('--mode', default='miou', choices=['show', 'save', 'miou'], type=str)
     args = parser.parse_args()
     if (args.mode == 'show'):
         show(device=device, direction=args.direction)
