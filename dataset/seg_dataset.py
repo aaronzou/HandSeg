@@ -93,7 +93,7 @@ class HandSegDataset(Dataset):
 
 
 if __name__ == '__main__':
-    data = HandSegDataset(is_train=False)
+    data = HandSegDataset(direction='front', is_train=False)
     from torch.utils.data import DataLoader
     data_loader = DataLoader(data, batch_size=1, shuffle=True)
     for item in data_loader:

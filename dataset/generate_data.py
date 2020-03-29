@@ -4,7 +4,7 @@ import sys
 sys.path.append('./')
 import config
 
-def GenerateData(direction='ego'):
+def GenerateData(direction='front'):
     if direction == 'ego':
         root = config.HAND_SEG_EGO_DATA_PATH
     elif direction == 'front':
@@ -36,7 +36,7 @@ def GenerateData(direction='ego'):
             train_mask.append(mask[t])
             train_rgb.append(rgb[t])
 
-    for i in range(len(test_user_dir)):
+    for i in range(1):
         path = os.path.join(root, test_user_dir[i])
         depth = [os.path.join(path, 'depth', f)
                  for f in os.listdir(os.path.join(path, 'depth'))]
@@ -46,7 +46,8 @@ def GenerateData(direction='ego'):
         tmp.sort()
         mask = [os.path.join(path, 'label_filtered', f)
                 for f in os.listdir(os.path.join(path, 'label_filtered'))]
-        mask.sort(key = lambda x: str(x[:-4]))
+        print(os.path.join(path, 'label_filtered'))
+        mask.sort()
         rgb = [os.path.join(path, 'color', f)
                 for f in os.listdir(os.path.join(path, 'color'))]
         rgb.sort()
@@ -56,6 +57,7 @@ def GenerateData(direction='ego'):
             test_tmp_depth.append(tmp[t])
             test_mask.append(mask[t])
             test_rgb.append(rgb[t])
+        break
 
     print(len(train_depth), len(train_mask))
     print(len(test_depth), len(test_tmp_depth))
@@ -64,13 +66,13 @@ def GenerateData(direction='ego'):
         np.savez('ego_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
         np.savez('ego_test.npz', rgb=test_rgb, depth=test_depth, tmp_depth=test_tmp_depth,mask=test_mask)
     elif direction == 'front':
-        np.savez('front_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
+    #     np.savez('front_train.npz', rgb=train_rgb, depth=train_depth, tmp_depth=train_tmp_depth, mask=train_mask)
         np.savez('front_test.npz', rgb=test_rgb, depth=test_depth, tmp_depth=test_tmp_depth,mask=test_mask)
 
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--direction', default='ego', choices=['front', 'ego'], type=str)
+    parser.add_argument('--direction', default='front', choices=['front', 'ego'], type=str)
     args = parser.parse_args()
     GenerateData(direction=args.direction)

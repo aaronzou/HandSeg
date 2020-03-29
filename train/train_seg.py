@@ -21,7 +21,7 @@ from FCNet import VGGNet, FCN16s
 from loss_function import cross_entropy2d
 
 
-def trainer(device, direction='ego', batch_size=4, eqoch_num=20):
+def trainer(device, direction='front', batch_size=4, eqoch_num=20):
     seg_data = HandSegDataset(direction=direction, is_train=True)
     data_loader = DataLoader(seg_data, batch_size=batch_size, num_workers=4, shuffle=True)
 
@@ -64,16 +64,14 @@ def trainer(device, direction='ego', batch_size=4, eqoch_num=20):
             optimizer.step()
             tol_step = tol_step+1
             writer.add_scalar('loss', iter_loss * 500, tol_step)
-            break
-        torch.save(model, os.path.join(checkpoints_path, '{}_FCN16s_{}.pt'.format(direction, epoch)))
-        break
+        torch.save(model.state_dict(), os.path.join(checkpoints_path, '{}_FCN16s_{}.pth'.format(direction, epoch)))
     writer.close()
 
 if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--direction', default='ego', choices=['front', 'ego'], type=str)
+    parser.add_argument('--direction', default='front', choices=['front', 'ego'], type=str)
     args = parser.parse_args()
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

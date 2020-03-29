@@ -36,22 +36,31 @@ Then, run:
 
 ```bash
 cd dataset
-python generate_data.py 
+python generate_data.py --direction "ego"
+python generate_data.py --direction "front"
 cd ..
 ```
 
-It will generate two npz file under ./dataset  
+It will generate 4 npz file under ./dataset:
+- ego_train.py
+- ego_test.py
+- front_train.py
+- front_test.py  
+  
 
 Modify the config.py again:  
 
 ```python
 TMP_HAND_SEG_EGO_DATA = '/path/to/the/code/HandsSeg/dataset/ego_train.npz'
 TMP_HAND_SEG_EGO_TEST_DATA = '/path/to/the/code/HandsSeg/dataset/ego_test.npz'
+TMP_HAND_SEG_FRONT_DATA = '/path/to/the/code/HandsSeg/dataset/front_train.npz'
+TMP_HAND_SEG_FRONT_TEST_DATA = '/path/to/the/code/HandsSeg/dataset/front_test.npz'
 ```
 
 ## 4. Test example
 
-You can use the terminal satisfied the requirements to run the following test demo, but I still suggest you using an IDE such as pycharm. All the following test is ok under pycharm.
+You can use the terminal satisfied the requirements to run the following test demo, but I still suggest you using an IDE such as pycharm. All the following test is ok under pycharm.  
+The following test include 'ego' view and 'front' view:
 
 #### 4.1 predict the labels of depth images  under example/,  run:
 
@@ -64,30 +73,45 @@ it will show the input depth image as well as the predict label.
 #### 4.2 test on the test dataset:
 
 - if you want to see the visual results , run:
-
 ```bash
-python test_dataset.py --mode "show"
+python test_dataset.py --mode "show" --direction "ego"
+```
+or
+```bash
+python test_dataset.py --mode "show" --direction "front"
 ```
 
 - if you want to save the predicted label, run:
-
 ```bash
-python test_dataset.py --mode "save"
+python test_dataset.py --mode "save" --direction "ego"
+```  
+or
+```bash
+python test_dataset.py --mode "save" --direction "front"
 ```  
 it will take about 1 hour, the saved images are like this:  
 </br></br>
 <p align="center">
     <img src="1.png", height="224">
 </p>  
+</br>
+<p align="center">
+    <img src="2.png", height="224">
+</p> 
 from left to right: rgb image, depth image, my synthesis depth image with environmental information, predict label and ground truth label.   
 I use the synthesis depth image as input and output the predict label. 
 
 - if you want to get the mIou score, run:
 
 ```bash
-python test_dataset.py --mode "miou"
+python test_dataset.py --mode "miou" --direction "ego"
 ```  
-it will take about 1 hour. In my experiment, the final mIou score is 0.867  
+or
+```bash
+python test_dataset.py --mode "miou" --direction "front"
+```  
+it will take about 1 hour. In my experiment, the final mIou score
+ of ego view is 0.867  and the final mIou score of front view is 
 
 
 ## 5. some results

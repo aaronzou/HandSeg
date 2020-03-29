@@ -15,18 +15,21 @@ sys.path.append('./model')
 from seg_dataset import HandSegDataset
 from FCNet import VGGNet, FCN16s
 
-def save():
-    seg_data = HandSegDataset(is_train=False)
+def save(device, direction='front'):
+    seg_data = HandSegDataset(direction=direction, is_train=False)
     data_loader = DataLoader(seg_data, batch_size=4, shuffle=False, num_workers=4)
 
     vgg_net = VGGNet(pretrained=True)
     model = FCN16s(pretrained_net=vgg_net, n_class=3)
-    model.load_state_dict(torch.load('checkpoints/seg_hand.pth'))
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if direction == 'front':
+        model.load_state_dict(torch.load('checkpoints/front_FCN16s_10.pth'))
+    elif direction == 'ego':
+        model.load_state_dict(torch.load('checkpoints/seg_hand_efo.pth'))
+    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
     model.eval()
 
-    root="./results_2"
+    root="./results_{}".format(direction)
     if not os.path.exists(root):
         os.mkdir(root)
 
@@ -73,14 +76,17 @@ def save():
             # plt.imsave(save_path, pre_mask)
 
 
-def show():
-    seg_data = HandSegDataset(is_train=False)
+def show(device, direction='front'):
+    seg_data = HandSegDataset(direction=direction, is_train=False)
     data_loader = DataLoader(seg_data, batch_size=4, shuffle=False)
 
     vgg_net = VGGNet(pretrained=True)
     model = FCN16s(pretrained_net=vgg_net, n_class=3)
-    model.load_state_dict(torch.load('checkpoints/seg_hand.pth'))
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if direction == 'front':
+        model.load_state_dict(torch.load('checkpoints/front_FCN16s_9.pth'))
+    elif direction == 'ego':
+        model.load_state_dict(torch.load('checkpoints/seg_hand_efo.pth'))
+    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
 
     model.eval()
@@ -159,13 +165,16 @@ def Iou(input,target,classNum, device):
     return np.mean(batchMious)
 
 
-def eval_mIou(device='cpu', batch_size=4):
-    seg_data = HandSegDataset(is_train=False)
+def eval_mIou(device, direction='front', batch_size=4):
+    seg_data = HandSegDataset(direction=direction, is_train=False)
     data_loader = DataLoader(seg_data, batch_size=batch_size, shuffle=False, num_workers=4)
 
     vgg_net = VGGNet(pretrained=True)
     model = FCN16s(pretrained_net=vgg_net, n_class=3)
-    model.load_state_dict(torch.load('checkpoints/seg_hand.pth'))
+    if direction == 'front':
+        model.load_state_dict(torch.load('checkpoints/front_FCN16s_9.pth'))
+    elif direction == 'ego':
+        model.load_state_dict(torch.load('checkpoints/seg_hand_efo.pth'))
     model.to(device)
     mean_iou = []
     for step, batch in enumerate(tqdm(data_loader, desc='eval miou ',
@@ -188,14 +197,16 @@ def eval_mIou(device='cpu', batch_size=4):
 
 if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # device = torch.device('cpu')
     print(device)
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('--direction', default='front', choices=['front', 'ego'], type=str)
     parser.add_argument('--mode', default='save', choices=['show', 'save', 'miou'], type=str)
     args = parser.parse_args()
     if (args.mode == 'show'):
-        show()
+        show(device=device, direction=args.direction)
     if (args.mode == 'save'):
-        save()
+        save(device=device, direction=args.direction)
     if (args.mode == 'miou'):
-        eval_mIou(device=device)
+        eval_mIou(device=device, direction=args.direction)
