@@ -26,6 +26,12 @@ git clone https://github.com/liwenssss/HandSeg.git
 cd HandSeg
 ```
 
+edit the congif.py:
+```python
+CHECKPOINT_EGO = '/path/to/the/code/HandsSeg/checkpoints/seg_hand_ego.pth'
+CHECKPOINT_FRONT = '/path/to/the/code/HandsSeg/checkpoints/seg_hand_front.pth'
+```
+
 ## 3. Prepare data
 
 download the data from : https://pan.baidu.com/s/1BSQvR_dZpz7-EY_fI-uvvg ,extract code:or0i

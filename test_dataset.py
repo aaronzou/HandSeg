@@ -14,6 +14,7 @@ sys.path.append('./model')
 
 from seg_dataset import HandSegDataset
 from FCNet import VGGNet, FCN16s
+import config
 
 def save(device, direction='front'):
     seg_data = HandSegDataset(direction=direction, is_train=False)
@@ -22,9 +23,9 @@ def save(device, direction='front'):
     vgg_net = VGGNet(pretrained=True)
     model = FCN16s(pretrained_net=vgg_net, n_class=3)
     if direction == 'front':
-        model.load_state_dict(torch.load('checkpoints/front_FCN16s_10.pth'))
+        model.load_state_dict(torch.load(config.CHECKPOINT_FRONT))
     elif direction == 'ego':
-        model.load_state_dict(torch.load('checkpoints/seg_hand_efo.pth'))
+        model.load_state_dict(torch.load(config.CHECKPOINT_EGO))
     # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
     model.eval()
@@ -83,9 +84,9 @@ def show(device, direction='front'):
     vgg_net = VGGNet(pretrained=True)
     model = FCN16s(pretrained_net=vgg_net, n_class=3)
     if direction == 'front':
-        model.load_state_dict(torch.load('checkpoints/front_FCN16s_9.pth'))
+        model.load_state_dict(torch.load(config.CHECKPOINT_FRONT))
     elif direction == 'ego':
-        model.load_state_dict(torch.load('checkpoints/seg_hand_efo.pth'))
+        model.load_state_dict(torch.load(config.CHECKPOINT_EGO))
     # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
 
@@ -172,9 +173,9 @@ def eval_mIou(device, direction='front', batch_size=4):
     vgg_net = VGGNet(pretrained=True)
     model = FCN16s(pretrained_net=vgg_net, n_class=3)
     if direction == 'front':
-        model.load_state_dict(torch.load('checkpoints/front_FCN16s_9.pth'))
+        model.load_state_dict(torch.load(config.CHECKPOINT_FRONT))
     elif direction == 'ego':
-        model.load_state_dict(torch.load('checkpoints/seg_hand_efo.pth'))
+        model.load_state_dict(torch.load(config.CHECKPOINT_EGO))
     model.to(device)
     mean_iou = []
     for step, batch in enumerate(tqdm(data_loader, desc='eval miou ',

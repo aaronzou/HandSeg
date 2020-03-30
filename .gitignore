@@ -5,4 +5,7 @@ __pycache__
 /results_1/
 /results_2/
 /results_front/
-/checkpoints/
+/checkpoints
+/checkpoints/focal_front_FCN16s
+/checkpoints/front_FCN16s
+/checkpoints/checkpoints_front
