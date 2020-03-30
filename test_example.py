@@ -9,16 +9,24 @@ sys.path.append('./dataset')
 sys.path.append('./model')
 
 from FCNet import VGGNet, FCN16s
+import config
 
-def show():
-    root = "./example"
+def show(direction='front'):
+    if direction=='ego':
+        root = "./ego_example"
+    elif direction=='front':
+        root = "./front_example"
     examples = [os.path.join(root, f) for f in os.listdir(root)]
     examples.sort()
-    print("test {} examples".format(str(len(examples))))
+    print("test {} examples on {}".format(str(len(examples)), direction))
 
     vgg_net = VGGNet(pretrained=True)
     model = FCN16s(pretrained_net=vgg_net, n_class=3)
-    model.load_state_dict(torch.load('checkpoints/seg_hand.pth'))
+
+    if direction=='ego':
+        model.load_state_dict(torch.load(config.CHECKPOINT_EGO))
+    elif direction=='front':
+        model.load_state_dict(torch.load(config.CHECKPOINT_FRONT))
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
 
@@ -41,4 +49,9 @@ def show():
         plt.show()
 
 if __name__ == '__main__':
-    show()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--direction', default='front', choices=['front', 'ego'], type=str)
+    args = parser.parse_args()
+
+    show(direction=args.direction)

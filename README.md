@@ -80,7 +80,11 @@ The following test include 'ego' view and 'front' view:
 #### 4.1 predict the labels of depth images  under example/,  run:
 
 ```bash
-python test_example.py
+python test_example.py --direction "ego"
+```
+or
+```bash
+python test_example.py --direction "front"
 ```
 
 it will show the input depth image as well as the predict label.
