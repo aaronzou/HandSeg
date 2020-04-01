@@ -8,7 +8,7 @@ import sys
 sys.path.append('./dataset')
 sys.path.append('./model')
 
-from FCNet import VGGNet, FCN16s
+from FCNet import VGGNet, FCN16s, SModel
 import config
 
 def show(direction='front'):
@@ -21,11 +21,12 @@ def show(direction='front'):
     print("test {} examples on {}".format(str(len(examples)), direction))
 
     vgg_net = VGGNet(pretrained=True)
-    model = FCN16s(pretrained_net=vgg_net, n_class=3)
 
     if direction=='ego':
+        model = FCN16s(pretrained_net=vgg_net, n_class=3)
         model.load_state_dict(torch.load(config.CHECKPOINT_EGO))
     elif direction=='front':
+        model = SModel(pretrained_net=vgg_net, n_class=3)
         model.load_state_dict(torch.load(config.CHECKPOINT_FRONT))
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)

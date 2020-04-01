@@ -135,24 +135,43 @@ it will take about 1 hour. In my experiment, the final mIou score
 
 ## 5. some results
 <p align="center">
-    <img src="./res2.gif", height="224">
+    <img src="gif_res/res2.gif", height="224">
 </p>
 
 <p align="center">
-    <img src="./res3.gif", height="224">
+    <img src="gif_res/res3.gif", height="224">
 </p>
 <p align="center">
-    <img src="./res7.gif", height="224">
+    <img src="gif_res/res7.gif", height="224">
 </p>
 
+some results in front view:
+<p align="center">
+    <img src="gif_res/res8.gif", height="224">
+</p>
+<p align="center">
+    <img src="gif_res/res9.gif", height="224">
+</p>
+<p align="center">
+    <img src="gif_res/res10.gif", height="224">
+</p>
+<p align="center">
+    <img src="gif_res/res11.gif", height="224">
+</p>
+<p align="center">
+    <img src="gif_res/res12.gif", height="224">
+</p>
+<p align="center">
+    <img src="gif_res/res13.gif", height="224">
+</p>
 But we can see that when two hands interact completely, especially when one hand
 overlay another hand, the predict result is not good:
 <p align="center">
-    <img src="./res4.gif", height="224">
+    <img src="gif_res/res4.gif", height="224">
 </p>
 <p align="center">
-    <img src="./res5.gif", height="224">
+    <img src="gif_res/res5.gif", height="224">
 </p>
 <p align="center">
-    <img src="./res6.gif", height="224">
+    <img src="gif_res/res6.gif", height="224">
 </p>

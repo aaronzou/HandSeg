@@ -104,7 +104,6 @@ if __name__ == '__main__':
         mask_im = item['mask_im']
         mask_onehot = item['mask_onehot']
 
-
         mask_im = torch.squeeze(mask_im, dim=0).numpy()
         mask_im = mask_im.astype(np.float32)
         print(mask_onehot.shape, mask_im.shape, item['mask_im'].shape)

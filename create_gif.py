@@ -11,7 +11,7 @@ def get_gif(root='./results_2', name='res2.gif', modify=False, duration=0.05):
     print("{} images.".format(str(len(image_paths))))
 
     frames = []
-    for i in range(903,1251):#271
+    for i in range(746,857):#271
         image = imageio.imread(image_paths[i])
         # image = np.array(Image.open(image_paths[i])).astype(np.float32)
         # image = np.array(plt.imread(image_paths[i]))
@@ -49,6 +49,6 @@ def gt_label(name='gt1.gif', duration=0.2):
 
 if __name__ == '__main__':
     label_path= '/home/liwensh2/code/HandsTrack/dataset/paintedHands/ego/output_user04/label_filtered'
-    get_gif(name='res7.gif', root='results_2', modify=False)
+    get_gif(name='gif_res/res13.gif', root='results_front_2', modify=False)
     # get_gif(root='./results', name='res1.gif', modify=False)
     # gt_label()

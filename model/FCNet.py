@@ -39,6 +39,42 @@ class FCN16s(nn.Module):
 
         return score
 
+class FCN8s(nn.Module):
+
+    def __init__(self, pretrained_net, n_class):
+        super().__init__()
+        self.n_class = n_class
+        self.pretrained_net = pretrained_net
+        self.relu    = nn.ReLU(inplace=True)
+        self.deconv1 = nn.ConvTranspose2d(512, 512, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn1     = nn.BatchNorm2d(512)
+        self.deconv2 = nn.ConvTranspose2d(512, 256, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn2     = nn.BatchNorm2d(256)
+        self.deconv3 = nn.ConvTranspose2d(256, 128, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn3     = nn.BatchNorm2d(128)
+        self.deconv4 = nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn4     = nn.BatchNorm2d(64)
+        self.deconv5 = nn.ConvTranspose2d(64, 32, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn5     = nn.BatchNorm2d(32)
+        self.classifier = nn.Conv2d(32, n_class, kernel_size=1)
+
+    def forward(self, x):
+        output = self.pretrained_net(x)
+        x5 = output['x5']
+        x4 = output['x4']
+        x3 = output['x3']
+
+        score = self.relu(self.deconv1(x5))
+        score = self.bn1(score + x4)
+        score = self.relu(self.deconv2(score))
+        score = self.bn2(score + x3)
+        score = self.bn3(self.relu(self.deconv3(score)))
+        score = self.bn4(self.relu(self.deconv4(score)))
+        score = self.bn5(self.relu(self.deconv5(score)))
+        score = self.classifier(score)
+
+        return score
+
 class VGGNet(VGG):
     def __init__(self, pretrained=True, model='vgg16', requires_grad=True, remove_fc=True, show_params=False):
         super().__init__(make_layers(cfg[model]))
@@ -142,11 +178,47 @@ Sequential(
   (30): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
 )
 '''
+class SModel(nn.Module):
 
+    def __init__(self, pretrained_net, n_class):
+        super().__init__()
+        self.n_class = n_class
+        self.pretrained_net = pretrained_net
+        self.relu    = nn.ReLU(inplace=True)
+        self.deconv1 = nn.ConvTranspose2d(512, 512, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn1     = nn.BatchNorm2d(512)
+        self.deconv2 = nn.ConvTranspose2d(512, 256, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn2     = nn.BatchNorm2d(256)
+        self.deconv3 = nn.ConvTranspose2d(256, 128, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn3     = nn.BatchNorm2d(128)
+        self.deconv4 = nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn4     = nn.BatchNorm2d(64)
+        self.deconv5 = nn.ConvTranspose2d(64, 32, kernel_size=3, stride=2, padding=1, dilation=1, output_padding=1)
+        self.bn5     = nn.BatchNorm2d(32)
+        self.classifier = nn.Conv2d(32, n_class, kernel_size=1)
+
+    def forward(self, x):
+        output = self.pretrained_net(x)
+        x5 = output['x5']
+        x4 = output['x4']
+        x3 = output['x3']
+        x2 = output['x2']
+        x1 = output['x1']
+
+        score = self.relu(self.deconv1(x5))
+        score = self.bn1(score + x4)
+        score = self.relu(self.deconv2(score))
+        score = self.bn2(score + x3)
+        score = self.bn3(self.relu(self.deconv3(score))+x2)
+        score = self.bn4(self.relu(self.deconv4(score)) + x1)
+        score = self.bn5(self.relu(self.deconv5(score)))
+        score = self.classifier(score)
+
+        return score
 
 if __name__ == "__main__":
     x = torch.randn(1, 3, 480, 640)
-    # vgg = VGGNet()
-    # fc_model = FCN16s(pretrained_net=vgg, n_class=3)
-    # output = fc_model(x)
-    # print(output.shape)
+    vgg = VGGNet()
+    fc_model = SModel(pretrained_net=vgg, n_class=3)
+    output = fc_model(x)
+    print(output.shape)

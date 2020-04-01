@@ -13,7 +13,7 @@ sys.path.append('./dataset')
 sys.path.append('./model')
 
 from seg_dataset import HandSegDataset
-from FCNet import VGGNet, FCN16s
+from FCNet import VGGNet, FCN16s, SModel
 import config
 
 def save(device, direction='front'):
@@ -21,16 +21,17 @@ def save(device, direction='front'):
     data_loader = DataLoader(seg_data, batch_size=4, shuffle=False, num_workers=4)
 
     vgg_net = VGGNet(pretrained=True)
-    model = FCN16s(pretrained_net=vgg_net, n_class=3)
     if direction == 'front':
+        model = SModel(pretrained_net=vgg_net, n_class=3)
         model.load_state_dict(torch.load(config.CHECKPOINT_FRONT))
     elif direction == 'ego':
+        model = FCN16s(pretrained_net=vgg_net, n_class=3)
         model.load_state_dict(torch.load(config.CHECKPOINT_EGO))
     # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
     model.eval()
 
-    root="./results_{}".format(direction)
+    root="./results_{}_2".format(direction)
     if not os.path.exists(root):
         os.mkdir(root)
 
@@ -62,7 +63,8 @@ def save(device, direction='front'):
             plt.subplot(1,5,4)
             plt.axis('off')
             plt.title('predict label')
-            pre_mask = predict[i].numpy()
+            predict = model(item['tmp_depth'].to(device))
+            pre_mask = torch.argmax(predict.cpu(), dim=1)[0].numpy()
             plt.imshow(pre_mask)
 
             plt.subplot(1,5,5)
@@ -82,10 +84,11 @@ def show(device, direction='front'):
     data_loader = DataLoader(seg_data, batch_size=4, shuffle=False)
 
     vgg_net = VGGNet(pretrained=True)
-    model = FCN16s(pretrained_net=vgg_net, n_class=3)
     if direction == 'front':
+        model = SModel(pretrained_net=vgg_net, n_class=3)
         model.load_state_dict(torch.load(config.CHECKPOINT_FRONT))
     elif direction == 'ego':
+        model = FCN16s(pretrained_net=vgg_net, n_class=3)
         model.load_state_dict(torch.load(config.CHECKPOINT_EGO))
     # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
@@ -168,13 +171,17 @@ def Iou(input,target,classNum, device):
 
 def eval_mIou(device, direction='front', batch_size=4):
     seg_data = HandSegDataset(direction=direction, is_train=False)
-    data_loader = DataLoader(seg_data, batch_size=batch_size, shuffle=False, num_workers=4)
+    print("test {}".format(direction))
+    data_loader = DataLoader(seg_data, batch_size=batch_size, shuffle=False, num_workers=batch_size)
 
     vgg_net = VGGNet(pretrained=True)
-    model = FCN16s(pretrained_net=vgg_net, n_class=3)
+    # model = FCN16s(pretrained_net=vgg_net, n_class=3)]
+
     if direction == 'front':
+        model = SModel(pretrained_net=vgg_net, n_class=3)
         model.load_state_dict(torch.load(config.CHECKPOINT_FRONT))
     elif direction == 'ego':
+        model = FCN16s(pretrained_net=vgg_net, n_class=3)
         model.load_state_dict(torch.load(config.CHECKPOINT_EGO))
     model.to(device)
     mean_iou = []
@@ -203,7 +210,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--direction', default='front', choices=['front', 'ego'], type=str)
-    parser.add_argument('--mode', default='miou', choices=['show', 'save', 'miou'], type=str)
+    parser.add_argument('--mode', default='save', choices=['show', 'save', 'miou'], type=str)
     args = parser.parse_args()
     if (args.mode == 'show'):
         show(device=device, direction=args.direction)
