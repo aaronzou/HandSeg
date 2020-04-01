@@ -130,7 +130,7 @@ or
 python test_dataset.py --mode "miou" --direction "front"
 ```  
 it will take about 1 hour. In my experiment, the final mIou score
- of ego view is 0.867  and the final mIou score of front view is 0.846. 
+ of ego view is 0.867  and the final mIou score of front view is 0.868. 
 
 
 ## 5. some results
@@ -143,6 +143,18 @@ it will take about 1 hour. In my experiment, the final mIou score
 </p>
 <p align="center">
     <img src="gif_res/res7.gif", height="224">
+</p>
+
+But we can see that when two hands interact completely, especially when one hand
+overlay another hand, the predict result is not good:
+<p align="center">
+    <img src="gif_res/res4.gif", height="224">
+</p>
+<p align="center">
+    <img src="gif_res/res5.gif", height="224">
+</p>
+<p align="center">
+    <img src="gif_res/res6.gif", height="224">
 </p>
 
 some results in front view:
@@ -164,14 +176,6 @@ some results in front view:
 <p align="center">
     <img src="gif_res/res13.gif", height="224">
 </p>
-But we can see that when two hands interact completely, especially when one hand
-overlay another hand, the predict result is not good:
 <p align="center">
-    <img src="gif_res/res4.gif", height="224">
-</p>
-<p align="center">
-    <img src="gif_res/res5.gif", height="224">
-</p>
-<p align="center">
-    <img src="gif_res/res6.gif", height="224">
+    <img src="gif_res/res14.gif", height="224">
 </p>

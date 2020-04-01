@@ -44,7 +44,7 @@ def save(device, direction='front'):
         depth_im = item['depth_im'].cpu()
         tmp_depth = item['tmp_depth'].cpu()
         predict = model(item['tmp_depth'].to(device))
-
+        predict = torch.argmax(predict.cpu(), dim=1)
 
         for i in range(predict.shape[0]):
             fig = plt.figure()
@@ -63,8 +63,7 @@ def save(device, direction='front'):
             plt.subplot(1,5,4)
             plt.axis('off')
             plt.title('predict label')
-            predict = model(item['tmp_depth'].to(device))
-            pre_mask = torch.argmax(predict.cpu(), dim=1)[0].numpy()
+            pre_mask = predict[i].numpy()
             plt.imshow(pre_mask)
 
             plt.subplot(1,5,5)
